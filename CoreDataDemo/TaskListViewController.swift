@@ -17,7 +17,7 @@ class TaskListViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         view.backgroundColor = .white
         setupNavigationBar()
-        
+        fetchData()
     }
 
     private func setupNavigationBar() {
@@ -50,21 +50,31 @@ class TaskListViewController: UITableViewController {
     }
     
     @objc private func addNewTask() {
-        showAlert(with: "New task", and: "What do you want to do?")
+        showAlertV2(with: "New task", and: "What do you want to do?")
     }
     
-    private func showAlert(with title: String, and message: String) {
+    
+    private func showAlertV2(with title: String, and message: String, at index: IndexPath? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
             guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
             self.save(task)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        if title == "New task" {
+            alert.addTextField { textField in
+                textField.placeholder = "New Task"
+            }
+        } else {
+            alert.addTextField() { textField in
+                textField.placeholder = "Task"
+            }
+            alert.textFields?.first?.text = taskList[index?.row ?? 0].title
+        }
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
-        alert.addTextField { textField in
-            textField.placeholder = "New Task"
-        }
+        
         present(alert, animated: true)
     }
     
@@ -75,6 +85,17 @@ class TaskListViewController: UITableViewController {
                 at: [IndexPath(row: taskList.count - 1, section: 0)],
                 with: .automatic
             )
+        }
+    }
+    
+    private func fetchData() {
+        StorageManager.shared.fetchData { result in
+            switch result {
+            case .success(let tasks):
+                self.taskList = tasks
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }
@@ -95,6 +116,8 @@ extension TaskListViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showAlert(with: "Edit", and: "Hello")
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        showAlertV2(with: "Update Task", and: "What do you want to do?", at: indexPath)
     }
 }
