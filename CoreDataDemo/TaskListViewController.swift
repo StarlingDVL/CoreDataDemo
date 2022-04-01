@@ -118,6 +118,17 @@ extension TaskListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        showAlertV2(with: "Update Task", and: "What do you want to do?", at: indexPath)
+        showAlertV2(with: "Update Task", and: "What do you want to do?",at: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let task = taskList[indexPath.row]
+        
+        if editingStyle == .delete {
+            taskList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            StorageManager.shared.delete(task)
+        }
     }
 }
