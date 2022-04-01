@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B5DE5B927F76DAE00E2FAD1 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DE5B827F76DAE00E2FAD1 /* StorageManager.swift */; };
 		A8D5AD13275E7A40003CEABC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D5AD12275E7A40003CEABC /* AppDelegate.swift */; };
 		A8D5AD15275E7A40003CEABC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D5AD14275E7A40003CEABC /* SceneDelegate.swift */; };
 		A8D5AD17275E7A40003CEABC /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D5AD16275E7A40003CEABC /* TaskListViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B5DE5B827F76DAE00E2FAD1 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		A8D5AD0F275E7A40003CEABC /* CoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8D5AD12275E7A40003CEABC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8D5AD14275E7A40003CEABC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				A8D5AD12275E7A40003CEABC /* AppDelegate.swift */,
+				2B5DE5B827F76DAE00E2FAD1 /* StorageManager.swift */,
 				A8D5AD14275E7A40003CEABC /* SceneDelegate.swift */,
 				A8D5AD16275E7A40003CEABC /* TaskListViewController.swift */,
 				A8D5AD29275E80F2003CEABC /* TaskViewController.swift */,
@@ -143,6 +146,7 @@
 				A8D5AD17275E7A40003CEABC /* TaskListViewController.swift in Sources */,
 				A8D5AD1D275E7A40003CEABC /* CoreDataDemo.xcdatamodeld in Sources */,
 				A8D5AD2A275E80F2003CEABC /* TaskViewController.swift in Sources */,
+				2B5DE5B927F76DAE00E2FAD1 /* StorageManager.swift in Sources */,
 				A8D5AD13275E7A40003CEABC /* AppDelegate.swift in Sources */,
 				A8D5AD15275E7A40003CEABC /* SceneDelegate.swift in Sources */,
 			);
@@ -301,7 +305,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -328,7 +332,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
