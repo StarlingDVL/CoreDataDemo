@@ -50,15 +50,23 @@ class TaskListViewController: UITableViewController {
     }
     
     @objc private func addNewTask() {
-        showAlertV2(with: "New task", and: "What do you want to do?")
+        showAlert(with: "New task", and: "What do you want to do?")
     }
     
+    // MARK: - AlertController
     
-    private func showAlertV2(with title: String, and message: String, at index: IndexPath? = nil) {
+    private func showAlert(with title: String, and message: String, and task: Task? = nil, at indexPath: IndexPath? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
         let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
             guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
             self.save(task)
+        }
+        let editAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let task = task, let indexPath = indexPath else { return }
+            guard let changedTask = alert.textFields?.first?.text, !changedTask.isEmpty else { return }
+            StorageManager.shared.edit(task, changedTask)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         
@@ -66,17 +74,21 @@ class TaskListViewController: UITableViewController {
             alert.addTextField { textField in
                 textField.placeholder = "New Task"
             }
+            alert.addAction(saveAction)
         } else {
+            guard let task = task else { return }
             alert.addTextField() { textField in
                 textField.placeholder = "Task"
             }
-            alert.textFields?.first?.text = taskList[index?.row ?? 0].title
+            alert.textFields?.first?.text = task.title
+            alert.addAction(editAction)
         }
-        alert.addAction(saveAction)
         alert.addAction(cancelAction)
         
         present(alert, animated: true)
     }
+    
+    // MARK: - Methods for interaction with Core Data
     
     private func save(_ taskName: String) {
         StorageManager.shared.save(taskName) { task in
@@ -100,6 +112,8 @@ class TaskListViewController: UITableViewController {
     }
 }
 
+// MARK: - Extenseion for Tableview methods
+
 extension TaskListViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         taskList.count
@@ -114,12 +128,11 @@ extension TaskListViewController {
         return cell
     }
     
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let task = taskList[indexPath.row]
         
-        showAlertV2(with: "Update Task", and: "What do you want to do?",at: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        showAlert(with: "Update Task", and: "What do you want to do?",and: task, at: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
