@@ -8,7 +8,6 @@
 import UIKit
 
 class TaskListViewController: UITableViewController {
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     private var taskList: [Task] = []
     private let cellID = "task"
@@ -18,12 +17,7 @@ class TaskListViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         view.backgroundColor = .white
         setupNavigationBar()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchData()
-        tableView.reloadData()
+        
     }
 
     private func setupNavigationBar() {
@@ -59,16 +53,6 @@ class TaskListViewController: UITableViewController {
         showAlert(with: "New task", and: "What do you want to do?")
     }
     
-    private func fetchData() {
-        let fetchRequest = Task.fetchRequest()
-        
-        do {
-            taskList = try context.fetch(fetchRequest)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
     private func showAlert(with title: String, and message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
@@ -85,19 +69,12 @@ class TaskListViewController: UITableViewController {
     }
     
     private func save(_ taskName: String) {
-        let task = Task(context: context)
-        task.title = taskName
-        taskList.append(task)
-        
-        let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
-        tableView.insertRows(at: [cellIndex], with: .automatic)
-        
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch let error {
-                print(error)
-            }
+        StorageManager.shared.save(taskName) { task in
+            self.taskList.append(task)
+            self.tableView.insertRows(
+                at: [IndexPath(row: taskList.count - 1, section: 0)],
+                with: .automatic
+            )
         }
     }
 }
